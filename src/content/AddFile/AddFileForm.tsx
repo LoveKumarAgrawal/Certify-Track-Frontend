@@ -18,7 +18,6 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-// import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
@@ -28,13 +27,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import withAuth from '@/withAuth';
+import { NEXT_URL } from '@/config';
+import * as Yup from 'yup';
 
 function Add() {
     const router = useRouter();
     const [data, setData] = useState([]);
     const [file, setFile] = useState(null);
     const user = JSON.parse(localStorage.getItem('user'))?.rollno
-    
+
 
     interface MyFormValues {
         id: string;
@@ -48,7 +49,11 @@ function Add() {
         endorsed: string;
     }
 
-    function addFile(values: any) {
+    function addFile(values: any) {      
+        console.log("add file function ke andar");
+        console.log("add file function ki values ki value", values);
+        
+          
         const formattedValues = {
             ...values,
             startDate: values.startDate ? dayjs(values.startDate).toDate() : null,
@@ -58,6 +63,8 @@ function Add() {
             status: "Pending",
             endorsed: ""
         };
+        console.log("ye hai formatted values", formattedValues);
+        
         const index = data.findIndex(item => item.id === formattedValues?.id);
 
         if (index !== -1) {
@@ -68,6 +75,15 @@ function Add() {
             setData([...data, { ...formattedValues, id: uuidv4(), userId: user, status: "Pending", endorsed: "" }]);
         }
     }
+
+    const fileValidation = Yup.object().shape({
+        id: Yup.string().nullable(),
+        name: Yup.string().required('Name is required'),
+        type: Yup.string().required('Type is required'),
+        userId: Yup.number().nullable(),
+        status: Yup.string().nullable(),
+        endorsed: Yup.string().nullable(),
+      });
 
     const formik = useFormik({
         initialValues: {
@@ -117,7 +133,7 @@ function Add() {
         formik.initialValues.endorsed = record.endorsed
     }
 
-    function handleChange(event: any) {
+    function handleChange(event: any) {        
         setFile(event.target.files[0])
     }
 
@@ -147,7 +163,7 @@ function Add() {
                 formData.append('status', data[0].status)
                 formData.append('endorsed', data[0].endorsed)
             }
-            const res = await fetch(`http://localhost:3001/fileupload/${(data.length > 1) ? "add" : "addOne"}`, {
+            const res = await fetch(`${NEXT_URL}/fileupload/${(data.length > 1) ? "add" : "addOne"}`, {
                 method: "POST",
                 body: formData
             });
@@ -191,7 +207,7 @@ function Add() {
             <Formik
                 initialValues={{ ...formik.initialValues }}
                 enableReinitialize
-                // validationSchema={formValidation}
+                validationSchema={fileValidation}
                 onSubmit={(values: MyFormValues, { resetForm }) => {
                     addFile(values)
                     resetForm();
@@ -232,7 +248,6 @@ function Add() {
                                     value={values.startDate}
                                     onChange={(newValue) => setFieldValue("startDate", newValue)}
                                 />
-                                <ErrorMessage name="startDate" component={CustomErrorMessage} />
                             </Grid>
                             <Grid item xs={6}>
                                 <DatePicker
@@ -240,7 +255,6 @@ function Add() {
                                     value={values.endDate}
                                     onChange={(newValue) => setFieldValue("endDate", newValue)}
                                 />
-                                <ErrorMessage name="endDate" component={CustomErrorMessage} />
                             </Grid>
                             <Grid item xs={12}>
                                 <Button
@@ -252,8 +266,9 @@ function Add() {
                                     fullWidth
                                 >
                                     Upload file
-                                    <VisuallyHiddenInput type="file" onChange={handleChange} />
+                                    <VisuallyHiddenInput type="file" onChange={handleChange} value={undefined} />
                                 </Button>
+                                <ErrorMessage name="file" component={CustomErrorMessage} />
                             </Grid>
                             <Grid item xs={12}>
                                 <Grid container spacing={2}>

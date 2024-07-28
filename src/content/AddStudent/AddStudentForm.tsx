@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { addStudentRecord, updateStudentRecord } from '@/redux/features/studentSlice';
 import withAuth from '@/withAuth';
+import { NEXT_URL } from '@/config';
 
 
 function Add() {
@@ -83,7 +84,7 @@ function Add() {
     };
     if (id !== '0') {
       try {
-        const res = await fetch(`http://localhost:3001/student/${id}`, {
+        const res = await fetch(`${NEXT_URL}/student/${id}`, {
           method: "PUT",
           headers: {
             "Content-type": "application/json"
@@ -103,7 +104,7 @@ function Add() {
 
     } else {
       try {
-        const res = await fetch('http://localhost:3001/student', {
+        const res = await fetch(`${NEXT_URL}/student`, {
           method: "POST",
           headers: {
             "Content-type": "application/json"

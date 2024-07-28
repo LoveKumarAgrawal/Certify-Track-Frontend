@@ -23,6 +23,7 @@ import { deleteStudentRecord, fetchStudents} from '@/redux/features/studentSlice
 import { AppDispatch, RootState } from '@/redux/store';
 import withAuth from '@/withAuth';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { NEXT_URL } from '@/config';
 
 
 function AllStudentTable() {
@@ -34,18 +35,9 @@ function AllStudentTable() {
     useEffect(()=>{
        data.length === 0 &&  dispatch(fetchStudents())
     },[])
-    
-    // interface User {
-    //     _id: string;
-    //     name: string;
-    //     email: string;
-    //     dob: string;
-    //     phoneNumber: number;
-    //     rollno: number;
-    // }
 
     const deleteStudent = (id: string) => {
-        fetch(`http://localhost:3001/student/${id}`, {
+        fetch(`${NEXT_URL}/student/${id}`, {
             method: "DELETE"
         }).then(() => dispatch(deleteStudentRecord(id))).catch((e) => console.log("Failed to delete the student", { e }))
     }

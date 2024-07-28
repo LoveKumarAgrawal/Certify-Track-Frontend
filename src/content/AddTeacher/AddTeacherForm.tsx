@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import withAuth from '@/withAuth';
 import { addTeacherRecord, updateTeacherRecord } from '@/redux/features/teacherSlice';
+import { NEXT_URL } from '@/config';
 
 
 function Add() {
@@ -55,7 +56,6 @@ function Add() {
       .matches(/^[6-9]\d{9}$/, 'Phone number must be 10 digits and start with 6, 7, 8, or 9'),
     class: Yup.string()
       .required('Rollno is Required')
-      
   });  
 
   const cancelButton = () => {
@@ -79,7 +79,7 @@ function Add() {
     };
     if (id !== '0') {
       try {
-        const res = await fetch(`http://localhost:3001/teacher/${id}`, {
+        const res = await fetch(`${NEXT_URL}/teacher/${id}`, {
           method: "PUT",
           headers: {
             "Content-type": "application/json"
@@ -99,7 +99,7 @@ function Add() {
 
     } else {
       try {
-        const res = await fetch('http://localhost:3001/teacher', {
+        const res = await fetch(`${NEXT_URL}/teacher`, {
           method: "POST",
           headers: {
             "Content-type": "application/json"

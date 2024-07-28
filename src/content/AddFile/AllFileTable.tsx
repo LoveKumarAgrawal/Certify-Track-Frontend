@@ -26,6 +26,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import UploadIcon from '@mui/icons-material/Upload';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { NEXT_URL } from '@/config';
 
 function AllFileTable() {
   const router = useRouter();
@@ -41,7 +42,7 @@ function AllFileTable() {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch('http://localhost:3001/fileupload/get', { method: 'GET' });
+      const res = await fetch(`${NEXT_URL}/fileupload/get`, { method: 'GET' });
       const data = await res.json();
       let filteredData;
       if (userId === undefined) {
@@ -55,14 +56,14 @@ function AllFileTable() {
   }, [id]);
 
   async function deleteData(fileName: string, id: string) {
-    await fetch(`http://localhost:3001/fileupload/${id}?filename=${fileName}`, { method: 'DELETE' })
+    await fetch(`${NEXT_URL}/fileupload/${id}?filename=${fileName}`, { method: 'DELETE' })
       .then(() => router.reload())
       .catch((e) => console.log('Failed to delete the file', { e }));
   }
 
   async function handleViewDocument(filename: string) {
     try {
-      const res = await fetch(`http://localhost:3001/fileupload/openPdf/${filename}`);
+      const res = await fetch(`${NEXT_URL}/fileupload/openPdf/${filename}`);
       if (res.ok) {
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
@@ -105,7 +106,7 @@ function AllFileTable() {
 
   async function uploadStatus(id: string, status: string, username) {
     try {
-      const updateStatus = await fetch(`http://localhost:3001/fileupload/${id}?status=${status}&endorsed=${username}`, { method: 'PUT' });
+      const updateStatus = await fetch(`${NEXT_URL}/fileupload/${id}?status=${status}&endorsed=${username}`, { method: 'PUT' });
       const data = await updateStatus.json();
       return data;
     } catch (error) {
