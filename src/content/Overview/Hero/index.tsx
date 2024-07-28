@@ -1,3 +1,4 @@
+import { NEXT_URL } from '@/config';
 import { addLoggedIn } from '@/redux/features/authSlice';
 import { AppDispatch } from '@/redux/store';
 import {
@@ -13,7 +14,7 @@ import {
   Hidden
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 const GlaLogo = styled(Box)(
@@ -42,26 +43,30 @@ function Hero() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  async function login(e) {
+
+  async function login(e: SyntheticEvent) {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:3001/auth/login`, {
+      const res = await fetch(`${NEXT_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
       if(res.ok) {
         const data = await res.json();
-        localStorage.setItem("isAuth", "true");
         localStorage.setItem("user", JSON.stringify(data))
         dispatch(addLoggedIn());
-        router.push("/management/addfile"); 
+        router.push("/management/addfile");   
+      } else {
+        const errorData = await res.json();
+        console.error('Login failed:', errorData.message || res.statusText);
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error('Error  during login:', error);
     }
   }
 

@@ -33,7 +33,7 @@ function Add() {
     const router = useRouter();
     const [data, setData] = useState([]);
     const [file, setFile] = useState(null);
-    const user = JSON.parse(localStorage.getItem('user')).userRollNo
+    const user = JSON.parse(localStorage.getItem('user'))?.rollno
     
 
     interface MyFormValues {
@@ -191,7 +191,7 @@ function Add() {
             <Formik
                 initialValues={{ ...formik.initialValues }}
                 enableReinitialize
-                //   validationSchema={formValidation}
+                // validationSchema={formValidation}
                 onSubmit={(values: MyFormValues, { resetForm }) => {
                     addFile(values)
                     resetForm();

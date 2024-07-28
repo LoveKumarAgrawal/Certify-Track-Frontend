@@ -6,13 +6,14 @@ import AllFileTable from '@/content/AddFile/AllFileTable';
 import { Grid, Container } from '@mui/material';
 
 function ApplicationsTransactions() {
+  
   return (
     <>
       <Head>
         <title>Transactions - Applications</title>
       </Head>
       <PageTitleWrapper>
-      {JSON.parse(localStorage.getItem('user')).userRoleId !== '665b569458c70fe9f7be72d3' ? <PageHeader /> : "" }
+        <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid

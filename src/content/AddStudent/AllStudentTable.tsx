@@ -28,6 +28,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 function AllStudentTable() {
 
     const {data} = useSelector((state: RootState)=> state.student)
+    const { roleId } = useSelector((state: RootState) => state.user)
 
     const dispatch = useDispatch<AppDispatch>();
     useEffect(()=>{
@@ -69,7 +70,7 @@ function AllStudentTable() {
                             <TableCell align='center'>Phone Number</TableCell>
                             <TableCell align='center'>DOB</TableCell>
                             <TableCell align='center'>University Roll No</TableCell>
-                            {(JSON.parse(localStorage.getItem('user')).userRoleId !== "66584b9eb71e72ada7eee731") ?
+                            {(roleId !== "66584b9eb71e72ada7eee731") ?
                             <TableCell align='right'>Actions</TableCell> : <TableCell align='right'>View Files</TableCell>}
                             
                         </TableRow>
@@ -133,7 +134,7 @@ function AllStudentTable() {
                                             {item.rollno}
                                         </Typography>
                                     </TableCell>
-                                {(JSON.parse(localStorage.getItem('user')).userRoleId !== "66584b9eb71e72ada7eee731") ?
+                                {(roleId !== "66584b9eb71e72ada7eee731") ?
                                     <TableCell align="right">
                                         <Tooltip title="Edit Data" arrow>
                                             <Link href={{

@@ -60,14 +60,6 @@ function HeaderUserbox() {
     dispatch(logOut())
     router.push('/')
   }
-  
-  
-
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Project Manager'
-  };
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -83,12 +75,11 @@ function HeaderUserbox() {
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={JSON.parse(localStorage.getItem('user')).userName} src={user.avatar} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{JSON.parse(localStorage.getItem('user')).userName}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{JSON.parse(localStorage.getItem('user')).username}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-            {JSON.parse(localStorage.getItem('user')).userRollNo}
+            {JSON.parse(localStorage.getItem('user'))?.rollno}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -110,11 +101,10 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={JSON.parse(localStorage.getItem('user')).userName} src={user.avatar} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{JSON.parse(localStorage.getItem('user')).userName}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{JSON.parse(localStorage.getItem('user')).username}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {JSON.parse(localStorage.getItem('user')).userRollNo}
+              {JSON.parse(localStorage.getItem('user'))?.rollno}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

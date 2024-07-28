@@ -24,6 +24,8 @@ import FilePresentIcon from '@mui/icons-material/FilePresent';
 import withAuth from '@/withAuth';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import UploadIcon from '@mui/icons-material/Upload';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 function AllFileTable() {
   const router = useRouter();
@@ -31,8 +33,9 @@ function AllFileTable() {
   const [openModal, setOpenModal] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const { id } = router.query;
-  const userId = JSON.parse(localStorage.getItem('user')).userRollNo;
-  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = JSON.parse(localStorage.getItem('user')).rollno;
+  const username = JSON.parse(localStorage.getItem('user')).username;
+  const { roleId } = useSelector((state: RootState) => state.user)
 
   const theme = useTheme();
 
@@ -162,7 +165,7 @@ function AllFileTable() {
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    {user.userRoleId !== '66584b9eb71e72ada7eee731' ? (
+                    {roleId !== '66584b9eb71e72ada7eee731' ? ( 
                       <>
                       <Typography variant="body1" fontSize='15px' fontWeight="bold" 
                       color={ item.status==="Pending" ? "orange" : (item.status==="Rejected" ? "red" : "green") } 
@@ -173,7 +176,7 @@ function AllFileTable() {
                         Endorsed by - {item.endorsed}
                       </Typography>
                       </>
-                    ) : (
+                    ) : ( 
                       <Select
                         value={item.status || 'Pending'}
                         onChange={(e) => handleStatusChange(e, item)}
@@ -185,9 +188,9 @@ function AllFileTable() {
                           </MenuItem>
                         ))}
                       </Select>
-                    )}
+                    )} 
                   </TableCell>
-                  {user.userRoleId === '66584b7db71e72ada7eee730' && item.status === 'Pending' ? (
+                  {roleId === '66584b7db71e72ada7eee730' && item.status === 'Pending' ? ( 
                     <TableCell align="right">
                       <Tooltip title="View Document" arrow>
                         <IconButton
@@ -218,7 +221,7 @@ function AllFileTable() {
                         </IconButton>
                       </Tooltip>
                     </TableCell>
-                  ) : user.userRoleId === '66584b9eb71e72ada7eee731' ? (
+                  ) : roleId === '66584b9eb71e72ada7eee731' ? (
                     <TableCell align="right">
                       <Tooltip title="View Document" arrow>
                         <IconButton
@@ -237,7 +240,7 @@ function AllFileTable() {
                       </Tooltip>
                       <Tooltip title="Save" arrow>
                         <IconButton
-                          onClick={() => uploadStatus(item._id, item.status, user.userName)}
+                          onClick={() => uploadStatus(item._id, item.status, username)}
                           sx={{
                             '&:hover': {
                               background: theme.colors.primary.lighter,
@@ -251,7 +254,7 @@ function AllFileTable() {
                         </IconButton>
                       </Tooltip>
                     </TableCell>
-                  ) : user.userRoleId === '6658219bcfaafbf55271c4ed' ? (
+                  ) : roleId === '6658219bcfaafbf55271c4ed' ? (
                     <TableCell align="right">
                       <Tooltip title="View Document" arrow>
                         <IconButton
@@ -282,13 +285,13 @@ function AllFileTable() {
                         </IconButton>
                       </Tooltip>
                     </TableCell>
-                  ) : 
+                  ) :
                   <TableCell align='right'>
                     <Typography variant="body1" fontWeight="bold" color="green" gutterBottom noWrap>
                         "Verified"
                       </Typography>
                   </TableCell>
-                  }
+                }
                 </TableRow>
               ))}
           </TableBody>

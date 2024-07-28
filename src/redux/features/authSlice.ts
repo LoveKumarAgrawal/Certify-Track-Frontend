@@ -1,27 +1,35 @@
-import { createSlice } from "@reduxjs/toolkit";
+// store/authSlice.ts
+import { createSlice} from "@reduxjs/toolkit";
 
+interface AuthState {
+  user: any;
+  roleId: string | null;
+}
 
-const initialState = {
-    isAuth : false,
-    user: null
-} as any
+const initialState: AuthState = {
+  user: null,
+  roleId: null,
+};
+
 
 const authDetails = createSlice({
-    name: "UserDetails",
-    initialState,
-    reducers: {
-        addLoggedIn: (state) => {
-            state.isAuth = Boolean(localStorage.getItem('isAuth'))
-            state.user = JSON.parse(localStorage.getItem('user'))
-        },
-        logOut: (state) => {
-            state.isAuth = false;
-            state.user = null;
-            localStorage.clear();
-        }
+  name: "UserDetails",
+  initialState,
+  reducers: {
+    addLoggedIn: (state) => {
+      state.user = JSON.parse(localStorage.getItem('user'))
+    },
+    logOut: (state) => {
+      state.user = null;
+      state.user = null;
+      localStorage.clear();
+    },
+    addUserRoleId: (state, action) => {
+        state.roleId = action.payload.userRoleId
     }
-})
+  },
+});
 
-export const { addLoggedIn, logOut } = authDetails.actions;
+export const { addLoggedIn, logOut, addUserRoleId } = authDetails.actions;
 
-export default authDetails.reducer
+export default authDetails.reducer;

@@ -12,6 +12,8 @@ import {
 import NextLink from 'next/link';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
+import { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -159,7 +161,7 @@ function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
   const router = useRouter();
   const currentRoute = router.pathname;
-  const userRole = JSON.parse(localStorage.getItem('user')).userRoleId;
+  const { roleId } = useSelector((state: RootState) => state.user)
 
   return (
     <>
@@ -168,7 +170,7 @@ function SidebarMenu() {
           component="div"
         >
 
-          { (userRole === '6658219bcfaafbf55271c4ed' || userRole === '66584b9eb71e72ada7eee731') ? <SubMenuWrapper>
+          { (roleId === '6658219bcfaafbf55271c4ed' || roleId === '66584b9eb71e72ada7eee731') ? <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
                 <NextLink href="/management/addstudent" passHref>
@@ -189,7 +191,7 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper> : null}
-          { (userRole === '6658219bcfaafbf55271c4ed') ? <SubMenuWrapper>
+          { (roleId === '6658219bcfaafbf55271c4ed') ? <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
                 <NextLink href="/management/addteacher" passHref>
