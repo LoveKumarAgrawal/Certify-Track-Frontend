@@ -16,7 +16,7 @@ import {
     Box,
     Button, Grid, TextField
 } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
@@ -49,11 +49,11 @@ function Add() {
         endorsed: string;
     }
 
-    function addFile(values: any) {      
+    function addFile(values: any) {
         console.log("add file function ke andar");
         console.log("add file function ki values ki value", values);
-        
-          
+
+
         const formattedValues = {
             ...values,
             startDate: values.startDate ? dayjs(values.startDate).toDate() : null,
@@ -64,7 +64,7 @@ function Add() {
             endorsed: ""
         };
         console.log("ye hai formatted values", formattedValues);
-        
+
         const index = data.findIndex(item => item.id === formattedValues?.id);
 
         if (index !== -1) {
@@ -83,7 +83,7 @@ function Add() {
         userId: Yup.number().nullable(),
         status: Yup.string().nullable(),
         endorsed: Yup.string().nullable(),
-      });
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -133,9 +133,18 @@ function Add() {
         formik.initialValues.endorsed = record.endorsed
     }
 
-    function handleChange(event: any) {        
-        setFile(event.target.files[0])
+    function handleChange(event: any) {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+        }
     }
+
+    useEffect(() => {
+        if (file) {
+            console.log("Current file:", file);
+        }
+    }, [file]);
 
     async function uploadFiles() {
         try {
@@ -268,7 +277,14 @@ function Add() {
                                     Upload file
                                     <VisuallyHiddenInput type="file" onChange={handleChange} value={undefined} />
                                 </Button>
-                                <ErrorMessage name="file" component={CustomErrorMessage} />
+                                    <Typography
+                                        align='center'
+                                        variant="body1"
+                                        color="GrayText"
+                                        noWrap
+                                    >
+                                        {file !== null ? file.name : ""}
+                                    </Typography>
                             </Grid>
                             <Grid item xs={12}>
                                 <Grid container spacing={2}>
