@@ -29,11 +29,13 @@ import { v4 as uuidv4 } from 'uuid';
 import withAuth from '@/withAuth';
 import { NEXT_URL } from '@/config';
 import * as Yup from 'yup';
+import LinearProgress from '@mui/material/LinearProgress';
 
 function Add() {
     const router = useRouter();
     const [data, setData] = useState([]);
     const [file, setFile] = useState(null);
+    const [progressBar, setProgressBar] = useState(false);
     const user = JSON.parse(localStorage.getItem('user'))?.rollno
 
 
@@ -136,13 +138,14 @@ function Add() {
     function handleChange(event: any) {
         const selectedFile = event.target.files[0];
         if (selectedFile) {
+            setProgressBar(true);
             setFile(selectedFile);
         }
     }
 
     useEffect(() => {
         if (file) {
-            console.log("Current file:", file);
+            setProgressBar(false);
         }
     }, [file]);
 
@@ -285,6 +288,9 @@ function Add() {
                                     >
                                         {file !== null ? file.name : ""}
                                     </Typography>
+                                    {progressBar ? <Box marginTop={2}>
+                                        <LinearProgress />
+                                    </Box> : ""}
                             </Grid>
                             <Grid item xs={12}>
                                 <Grid container spacing={2}>
