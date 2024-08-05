@@ -34,8 +34,8 @@ function AllFileTable() {
   const [openModal, setOpenModal] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const { id } = router.query;
-  const userId = JSON.parse(localStorage.getItem('user')).rollno;
-  const username = JSON.parse(localStorage.getItem('user')).username;
+  const userId = localStorage.getItem('user')!==null ? JSON.parse(localStorage.getItem('user')).rollno : null;
+  const username = localStorage.getItem('user')!==null ? JSON.parse(localStorage.getItem('user')).username : null;
   const { roleId } = useSelector((state: RootState) => state.user)
 
   const theme = useTheme();

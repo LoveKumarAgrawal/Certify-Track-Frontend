@@ -21,7 +21,6 @@ const authDetails = createSlice({
     },
     logOut: (state) => {
       state.user = null;
-      state.user = null;
       localStorage.clear();
     },
     addUserRoleId: (state, action) => {
